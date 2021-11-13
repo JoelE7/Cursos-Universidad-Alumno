@@ -1,25 +1,22 @@
-package ar.edu.unlam.tallerweb1.AttributeModel;
+package ar.edu.unlam.tallerweb1.modelo;
 
-public class DatosAlumno {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-    private Long idAlumno;
+@Entity
+public class Alumno {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nombre;
 
     private String email;
 
     private String telefono;
-
-    public DatosAlumno(){
-
-    }
-
-    public DatosAlumno(String nombre, String email, String telefono,Long id) {
-        this.nombre = nombre;
-        this.email = email;
-        this.telefono = telefono;
-        this.idAlumno = id;
-    }
 
     public String getNombre() {
         return nombre;
@@ -45,11 +42,11 @@ public class DatosAlumno {
         this.telefono = telefono;
     }
 
-    public Long getIdAlumno() {
-        return idAlumno;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setIdAlumno(Long idAlumno) {
-        this.idAlumno = idAlumno;
+    public Long getId() {
+        return id;
     }
 }
