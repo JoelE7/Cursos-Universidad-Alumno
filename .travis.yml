@@ -1,9 +1,12 @@
-language: java
+languaje: java
 script: mvn clean test
-jdk:
-  - oraclejdk11
 notifications:
+  slack:
+    on_success: change
   email:
     recipients:
-      -sebastianismael@gmail.com
-      -damianspizzirri@gmail.com
+      - joellasalas77@gmail.com
+    on_success: change
+    on_failure: always
+jdk:
+  - openjdk11
