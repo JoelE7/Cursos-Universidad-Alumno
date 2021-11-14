@@ -106,6 +106,7 @@ public class RepositorioAlumnoTest extends SpringTest {
         alumno.setTelefono("119988776655");
         alumno.setEmail("flor@gmail.com");
         repositorioAlumno.guardarAlumno(alumno);
+        alumno = repositorioAlumno.buscarAlumnoPorId(idAlumno);
     }
 
     private void thenSeModificanLosaDatosDelAlumno() {

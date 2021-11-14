@@ -5,13 +5,16 @@
 <div class="container">
     <div class="card-header mt-5">
         <div class="row">
-            <div class="col-9">
-                <c:if test="${not empty alumnoNoEncontrado}">
-                    <h2>${alumnoNoEncontrado}</h2>
+            <div class="col-8">
+                <c:if test="${not empty mensaje}">
+                    <h2>${mensaje}</h2>
                 </c:if>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <a href="listar-alumnos" class="btn btn-primary btn-lg">Volver lista de alumnos</a>
+            </div>
+            <div class="col-2">
+                <a href="listar-cursos" class="btn btn-success btn-lg">Volver lista de cursos</a>
             </div>
         </div>
     </div>

@@ -14,4 +14,5 @@ public interface RepositorioAlumno {
     Alumno buscarAlumnoPorId(Long idAlumno);
 
     void eliminarAlumno(Alumno alumnoAEliminar);
+
 }
