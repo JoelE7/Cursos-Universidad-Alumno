@@ -21,7 +21,6 @@ public class ServicioAlumnoTest {
     private RepositorioAlumno repositorioAlumno = mock(RepositorioAlumno.class);
     private ServicioAlumno servicioAlumno = new ServicioAlumnoImpl(repositorioAlumno);
     private DatosAlumno datosAlumno = new DatosAlumno("Joel", "joel@gmail.com", "112233445566",1L);
-    private DatosAlumno datosAlumnoIncompleto = new DatosAlumno("Joel2", "joel2@gmail.com", "",null);
     private List<Alumno> listaAlumnos;
     private Alumno alumno;
     private Long idAlumno = 1L;

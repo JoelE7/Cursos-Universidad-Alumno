@@ -146,7 +146,7 @@ public class ControladorAlumnoTest {
 
     private void thenMeMandaElMsjDeQueNoExiste(String mensaje) {
         assertThat(mav.getViewName()).isEqualTo("error");
-        assertThat(mav.getModel().get("alumnoNoEncontrado")).isEqualTo(mensaje);
+        assertThat(mav.getModel().get("mensaje")).isEqualTo(mensaje);
     }
 
 
@@ -241,7 +241,7 @@ public class ControladorAlumnoTest {
 
     private void thenMeDiceQueElAlumnoBuscadoNoExiste() {
         assertThat(mav.getViewName()).isEqualTo("error");
-        assertThat(mav.getModel().get("alumnoNoEncontrado")).isEqualTo("Alumno inexistente, no se pudo encontrar el alumno");
+        assertThat(mav.getModel().get("mensaje")).isEqualTo("Alumno inexistente, no se pudo encontrar el alumno");
 
     }
 }

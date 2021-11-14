@@ -30,6 +30,7 @@ public class ControladorAlumno {
         this.servicioAlumno = servicioAlumno;
     }
 
+
     @RequestMapping("formulario-alumno")
     public ModelAndView formularioAlumno() {
         mav = procesarRegistroFormulario(null);
@@ -39,13 +40,6 @@ public class ControladorAlumno {
     @RequestMapping("registro-exitoso")
     public ModelAndView registroAlumnoExitoso() {
         mav = procesarRegistroFormulario("El alumno ha sido registrado con exito");
-        return mav;
-
-    }
-
-    @RequestMapping("registro-fallido")
-    public ModelAndView registroAlumnoFallido() {
-        mav = procesarRegistroFormulario("No se ha podido registrar el alumno");
         return mav;
 
     }
@@ -163,7 +157,7 @@ public class ControladorAlumno {
     private ModelAndView procesarErrores(String mensaje) {
 
         ModelMap model = new ModelMap();
-        model.put("alumnoNoEncontrado", mensaje);
+        model.put("mensaje", mensaje);
 
         return new ModelAndView("error", model);
     }
