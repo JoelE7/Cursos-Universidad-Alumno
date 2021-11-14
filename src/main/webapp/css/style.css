@@ -1,0 +1,13 @@
+.html {
+    background-color: #2196f3;
+    font-family: "helvetica neue";
+    background: url(fondo.png), #2196f3;
+    background: url(fondo.png),
+    -webkit-gradient(linear, right top, left top, from(#2196f3), to(#009688));
+    background: url(fondo.png),
+    linear-gradient(to left, #2196f3, #009688);
+}
+
+.letra{
+    font-size: 35px;
+}

@@ -7,10 +7,10 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col">
-            <h1 class="text-center">Modificar curso</h1>
+            <h1 class="mb-5 text-center text-white font-italic">Modificar curso</h1>
         </div>
     </div>
-    <div class="card-header mt-5">
+    <div class="card-header bg-warning justify-content-center align-items-center vh-50 m-0">
         <form:form action="modificar-curso-lista" modelAttribute="datosAModificar">
             <div class="row">
                 <div class="col">
@@ -23,32 +23,32 @@
                                value="${nombreDefault}" placeholder="Nombre del curso">
                     </c:if>
                     <c:if test="${not empty erroresValidacion.get('nombreError')}">
-                        <p>${erroresValidacion.get('nombreError')}</p>
+                        <p class="text-center letra text-danger">${erroresValidacion.get('nombreError')}</p>
                     </c:if>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <c:if test="${empty codigoDefault}">
-                        <input type="text" name="codigoCurso" class="form-control mt-5" id="nombreCurso"
+                        <input type="text" name="codigoCurso" class="form-control mt-3" id="nombreCurso"
                                value="${cursoModificar.codigo}" placeholder="Codigo del curso">
                     </c:if>
                     <c:if test="${not empty codigoDefault}">
-                        <input type="text" name="codigoCurso" class="form-control mt-5" id="codigoCurso"
+                        <input type="text" name="codigoCurso" class="form-control mt-3" id="codigoCurso"
                                value="${codigoDefault}" placeholder="Codigo del curso">
                     </c:if>
                     <c:if test="${not empty erroresValidacion.get('codigoError')}">
-                        <p>${erroresValidacion.get('codigoError')}</p>
+                        <p class="text-center letra text-danger">${erroresValidacion.get('codigoError')}</p>
                     </c:if>
                     <c:if test="${not empty codigoExistente}">
-                        <p>${codigoExistente}</p>
+                        <p class="text-center letra text-danger">${codigoExistente}</p>
                     </c:if>
                     <input type="hidden" name="idCurso" value="${cursoModificar.id}"/>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <input type="submit" value="Modificar" class="btn btn-block btn-warning mt-3">
+                    <input type="submit" value="Modificar curso" class="btn btn-block btn-success mt-3">
                 </div>
             </div>
         </form:form>
@@ -75,7 +75,7 @@
                                    value="${nombreDefault}" placeholder="Nombre del curso">
                         </c:if>
                         <c:if test="${not empty erroresValidacion.get('nombreError')}">
-                            <p>${erroresValidacion.get('nombreError')}</p>
+                            <p class="text-center letra text-danger">${erroresValidacion.get('nombreError')}</p>
                         </c:if>
                     </div>
                 </div>
@@ -90,17 +90,17 @@
                                    value="${codigoDefault}" placeholder="Codigo del curso">
                         </c:if>
                         <c:if test="${not empty erroresValidacion.get('codigoError')}">
-                            <p>${erroresValidacion.get('codigoError')}</p>
+                            <p class="text-center letra text-danger">${erroresValidacion.get('codigoError')}</p>
                         </c:if>
                         <c:if test="${not empty codigoExistente}">
-                            <p>${codigoExistente}</p>
+                            <p class="text-center letra text-danger">${codigoExistente}</p>
                         </c:if>
                         <input type="hidden" name="idCurso" value="${cursoModificar.id}"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <input type="submit" value="Modificar" class="btn btn-block btn-warning mt-3">
+                        <input type="submit" value="Modificar curso" class="btn btn-block btn-success mt-3">
                     </div>
                 </div>
             </form:form>

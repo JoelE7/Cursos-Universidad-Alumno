@@ -9,6 +9,7 @@ public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_curso")
     private Long id;
 
     private String codigo;
@@ -17,7 +18,13 @@ public class Curso {
 
     private Integer cantidadDeAlumnos;
 
-    @OneToMany()
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "curso_alumno",
+            joinColumns = @JoinColumn(name = "id_alumno"),
+            inverseJoinColumns = @JoinColumn(name = "id_curso")
+
+    )
     private List<Alumno> alumnos;
 
     public List<Alumno> getListaAlumnos() {

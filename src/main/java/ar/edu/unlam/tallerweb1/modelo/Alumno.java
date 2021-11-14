@@ -9,6 +9,7 @@ public class Alumno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_alumno")
     private Long id;
 
     private String nombre;
@@ -16,6 +17,17 @@ public class Alumno {
     private String email;
 
     private String telefono;
+
+    @ManyToMany(mappedBy = "alumnos")
+    private List<Curso> cursos;
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+    }
 
     public String getNombre() {
         return nombre;
@@ -49,13 +61,4 @@ public class Alumno {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "Alumno{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", email='" + email + '\'' +
-                ", telefono='" + telefono + '\'' +
-                '}';
-    }
 }

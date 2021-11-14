@@ -5,33 +5,41 @@
 
 
 <c:if test="${not empty listaCursos}">
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-7">
+                <h1 class="mb-5 text-right text-white font-italic">Lista de cursos</h1>
+            </div>
+            <div class="col-5">
+                <a href="formulario-curso" class="float-right letra btn btn-success">Registrar curso</a>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
-                <table class="table table-responsive table-danger">
+                <table class="table table-hover table-striped table-bordered table-responsive-xl table-active mt-3">
                     <tr>
-                        <td>Id</td>
-                        <td>Nombre</td>
-                        <td>Codigo del curso</td>
-                        <td>Cantidad de alumnos</td>
-                        <td>Acciones</td>
+                        <td class="letra">Nombre</td>
+                        <td class="letra">Codigo del curso</td>
+                        <td class="letra">Cantidad de alumnos</td>
+                        <td class="letra" colspan="10">Acciones</td>
                     </tr>
                     <c:forEach items="${listaCursos}" var="cursos">
                         <tr>
-                            <td>${cursos.id}</td>
-                            <td>${cursos.nombre}</td>
-                            <td>${cursos.codigo}</td>
-                            <td>${cursos.cantidadDeAlumnos}</td>
-                            <td><a href="formulario-modificar-curso-lista?idCurso=${cursos.id}"
-                                   class="btn btn-warning">Modificar</a></td>
-                            <td><a href="curso-detalle?idCurso=${cursos.id}" class="btn btn-primary">Ver
+                            <td class="letra">${cursos.nombre}</td>
+                            <td class="letra">${cursos.codigo}</td>
+                            <td class="letra">${cursos.cantidadDeAlumnos}</td>
+                            <td class="letra"><a href="formulario-modificar-curso-lista?idCurso=${cursos.id}"
+                                   class="btn btn-block btn-warning">Modificar</a></td>
+                            <td><a href="curso-detalle?idCurso=${cursos.id}" class=" btn btn-block btn-primary">Ver
                                 detalles</a></td>
-                            <c:if test="${cursos.cantidadDeAlumnos gt 0}">
-                            <td><a href="eliminar-curso?idCurso=${cursos.id}" class="btn btn-danger">Eliminar
-                                alumno</a></td>
-                            </c:if>
-                            <td><a href="eliminar-curso?idCurso=${cursos.id}" class="btn btn-danger">Eliminar
+                            <td><a href="eliminar-curso?idCurso=${cursos.id}" class=" btn btn-block btn-danger">Eliminar
                                 curso</a></td>
+                            <c:if test="${cursos.cantidadDeAlumnos gt 0}">
+                                <td><a href="quitar-alumno?idCurso=${cursos.id}" class="btn btn-block btn-danger">Quitar
+                                    alumno del curso</a></td>
+                            </c:if>
+                            <td><a href="agregar-alumno?idCurso=${cursos.id}" class="btn btn-block btn-success">Agregar alumno
+                            </a></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -46,7 +54,7 @@
         <div class="card-header mt-5">
             <div class="row">
                 <div class="col-9">
-                    <h2>${listaCursosVacia}</h2>
+                    <h2 class="text-warning letra">${listaCursosVacia}</h2>
                 </div>
                 <div class="col-3">
                     <a href="formulario-curso" class="btn btn-primary btn-lg">Registro de cursos</a>

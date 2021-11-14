@@ -1,11 +1,16 @@
 package ar.edu.unlam.tallerweb1.controladorTest;
 
 import ar.edu.unlam.tallerweb1.AttributeModel.DatosCurso;
+import ar.edu.unlam.tallerweb1.Excepciones.AlumnoExistente;
+import ar.edu.unlam.tallerweb1.Excepciones.AlumnoNoEncontrado;
 import ar.edu.unlam.tallerweb1.Excepciones.CodigoCursoExistente;
 import ar.edu.unlam.tallerweb1.Excepciones.CursoNoEncontrado;
 import ar.edu.unlam.tallerweb1.controladores.ControladorCurso;
+import ar.edu.unlam.tallerweb1.modelo.Alumno;
 import ar.edu.unlam.tallerweb1.modelo.Curso;
+import ar.edu.unlam.tallerweb1.servicios.ServicioAlumno;
 import ar.edu.unlam.tallerweb1.servicios.ServicioCurso;
+import com.sun.xml.bind.v2.model.core.ID;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,15 +26,18 @@ public class ControladorCursoTest {
 
     private ModelAndView mav;
     private ServicioCurso servicioCurso;
+    private ServicioAlumno servicioAlumno;
     private ControladorCurso controladorCurso;
     DatosCurso datosCurso = new DatosCurso(1L,"333","Java");
     DatosCurso datosCursoIncompleto = new DatosCurso(1L,"333","");
     private final Long ID_CURSO = 1L;
+    private final Long ID_ALUMNO = 2L;
 
     @Before
     public void init() {
         servicioCurso = mock(ServicioCurso.class);
-        controladorCurso = new ControladorCurso(servicioCurso);
+        servicioAlumno = mock(ServicioAlumno.class);
+        controladorCurso = new ControladorCurso(servicioCurso,servicioAlumno);
     }
 
     @Test
@@ -140,6 +148,96 @@ public class ControladorCursoTest {
 
         thenMeMandaElMsjDeQueNoExiste("Curso inexistente, no se puede modificar");
 
+    }
+
+    @Test
+    public void queSePuedaAgregarUnAlumnoAUnCurso(){
+
+        givenQUeExisteUnAlumnoYUnCurso();
+
+        whenAgregoElAlumnoAlCurso();
+
+        thenElAlumnoSeAgrega();
+
+    }
+
+    @Test
+    public void queAlAgregarUnAlumnoAUnCursoYNoExisteMandeUnMsj(){
+
+        givenQueUnAlumnoNoExiste();
+
+        whenAgregoElAlumnoAlCurso();
+
+        thenMeMandaElMsjDeQueNoExiste("Alumno inexistente, no se puede agregar al curso");
+
+    }
+
+    @Test
+    public void queAlQuererAgregarUnAlumnoAUnCursoInexistenteMandeUnMsj(){
+
+        givenQueUnCursoNoExiste();
+
+        whenAgregoElAlumnoAlCurso();
+
+        thenMeMandaElMsjDeQueNoExiste("Curso inexistente, no se puede agregar ningún alumno");
+
+    }
+
+    @Test
+    public void queAlAgregarUnAlumnoAUnCursoQueYaExisteMandeUnMsj(){
+
+        givenQueUnAlumnoYaExisteDentroDeUnCurso();
+
+        whenAgregoElAlumnoAlCurso();
+
+        thenMeMandaElMsjDeQueNoExiste("Este alumno ya se encuentra inscripto en este curso");
+    }
+
+    @Test
+    public void queSePuedaEliminarUnAlumnoDeUnCurso(){
+
+        givenQUeExisteUnAlumnoYUnCurso();
+
+        whenQuieroEliminarElAlumnoDelCurso();
+
+        thenElAlumnoSeEliminaDelCurso();
+
+
+
+    }
+
+    private void whenQuieroEliminarElAlumnoDelCurso() {
+        mav = controladorCurso.eliminarAlumnoDeUnCurso(ID_CURSO,ID_ALUMNO);
+    }
+
+    private void thenElAlumnoSeEliminaDelCurso() {
+        assertThat(mav.getViewName()).isEqualTo("redirect:agregar-alumno?="+ID_CURSO);
+    }
+
+    private void givenQueUnAlumnoYaExisteDentroDeUnCurso() {
+        doThrow(AlumnoExistente.class).when(servicioCurso).agregarAlumnoAUnCurso(anyLong(),anyLong());
+    }
+
+    private void givenQueUnCursoNoExiste() {
+        doThrow(CursoNoEncontrado.class).when(servicioCurso).agregarAlumnoAUnCurso(anyLong(),anyLong());
+    }
+
+    private void givenQueUnAlumnoNoExiste() {
+        doThrow(AlumnoNoEncontrado.class).when(servicioCurso).agregarAlumnoAUnCurso(anyLong(),anyLong());
+    }
+
+    private void givenQUeExisteUnAlumnoYUnCurso() {
+        when(servicioCurso.buscarCursoPorId(anyLong())).thenReturn(new Curso());
+        when(servicioAlumno.buscarAlumnoPorId(anyLong())).thenReturn(new Alumno());
+
+    }
+
+    private void whenAgregoElAlumnoAlCurso() {
+        mav = controladorCurso.agregarAlumnoAUnCursoLista(ID_CURSO,ID_ALUMNO);
+    }
+
+    private void thenElAlumnoSeAgrega() {
+        assertThat(mav.getViewName()).isEqualTo("redirect:lista-cursos");
     }
 
     private void thenMeMandaElMsjDeQueNoExiste(String mensaje) {

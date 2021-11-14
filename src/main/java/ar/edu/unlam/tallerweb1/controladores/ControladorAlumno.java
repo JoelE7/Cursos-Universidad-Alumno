@@ -51,11 +51,12 @@ public class ControladorAlumno {
 
         Map<String, String> errores = validarRegistroAlumnos(alumnoRegistro);
 
+        model.put("emailDefault", alumnoRegistro.getEmail());
+        model.put("nombreDefault", alumnoRegistro.getNombre());
+        model.put("telefonoDefault", alumnoRegistro.getTelefono());
+
         if (errores.size() > 0) {
             model.put("erroresValidacion", errores);
-            model.put("emailDefault", alumnoRegistro.getEmail());
-            model.put("nombreDefault", alumnoRegistro.getNombre());
-            model.put("telefonoDefault", alumnoRegistro.getTelefono());
             return new ModelAndView("formulario-alumno", model);
         }
 
