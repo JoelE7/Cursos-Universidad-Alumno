@@ -171,7 +171,7 @@ public class ControladorCursoTest {
 
     private void thenMeDiceQueElCursoBuscadoNoExiste() {
         assertThat(mav.getViewName()).isEqualTo("error");
-        assertThat(mav.getModel().get("mensaje")).isEqualTo("Curso inexistente, no se pudo encontrar el alumno");
+        assertThat(mav.getModel().get("mensaje")).isEqualTo("Curso inexistente, no se pudo encontrar el curso");
     }
 
     private void givenUnCursoExistente() {
