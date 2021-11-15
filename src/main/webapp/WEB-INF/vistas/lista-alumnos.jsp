@@ -73,7 +73,7 @@
         <div class="card-header mt-5">
             <div class="row">
                 <div class="col-9">
-                    <h2>${listaAlumnosVacia}</h2>
+                    <h2 class="text-warning">${listaAlumnosVacia}</h2>
                 </div>
                 <div class="col-3">
                     <a href="formulario-alumno" class="btn btn-primary btn-lg">Registro de alumnos</a>
