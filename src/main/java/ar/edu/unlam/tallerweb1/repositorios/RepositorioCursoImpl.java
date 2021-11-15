@@ -1,7 +1,6 @@
 package ar.edu.unlam.tallerweb1.repositorios;
 
 import ar.edu.unlam.tallerweb1.modelo.Curso;
-import ar.edu.unlam.tallerweb1.modelo.ItemCurso;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -52,4 +51,15 @@ public class RepositorioCursoImpl implements RepositorioCurso{
     public void eliminarCurso(Curso cursoAEliminar) {
         sessionFactory.getCurrentSession().delete("Curso",cursoAEliminar);
     }
+
+    @Override
+    public Curso buscarAlumnoEnUnCurso(Long idALumno, Long idCurso) {
+        final Session session = this.sessionFactory.getCurrentSession();
+       Curso cursoBuscado = (Curso) session.createCriteria(Curso.class)
+                .add(Restrictions.eq("id",idCurso))
+                .createAlias("alumnos","a")
+                .add(Restrictions.eq("a.id",idALumno)).uniqueResult();
+        return cursoBuscado;
+    }
+
 }

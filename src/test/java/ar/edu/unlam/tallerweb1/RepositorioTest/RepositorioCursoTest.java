@@ -23,6 +23,8 @@ public class RepositorioCursoTest extends SpringTest {
     private List<Alumno> listaAlumnos;
     private Curso curso;
     private final String CODIGO_CURSO = "777";
+    private  Long ID_ALUMNO;
+    private  Long ID_CURSO;
 
     @Test
     @Rollback
@@ -88,6 +90,89 @@ public class RepositorioCursoTest extends SpringTest {
 
     }
 
+    @Test
+    @Rollback
+    @Transactional
+    public void queSePuedaBuscarUnAlumnoEnUnCurso(){
+
+        givenQueExisteUnAlumnoYUnCurso();
+
+        whenBuscoElAlumno();
+
+        thenMeDevuelveELAlumnoBuscado();
+
+
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void queUnAlumnoPuedaAgregarseAUnCurso(){
+
+        Long idCurso = givenQueExisteUnCursoYUnAlumno();
+
+        whenElAlumnoQuiereAgregarseAlCurso(idCurso);
+
+        thenElAlumnoSeAgregaExitosamente();
+
+    }
+
+    private Long givenQueExisteUnCursoYUnAlumno() {
+        Alumno a1 = new Alumno();
+        Alumno a2 = new Alumno();
+        //setteando los atributos a los alumnos
+        a1.setEmail("joel@gmail.com");
+        a1.setNombre("Joel");
+        a1.setTelefono("11332");
+        a2.setEmail("flor@gmail.com");
+        a2.setNombre("flor");
+        a2.setTelefono("113323123");
+        //Creando curso
+        Curso c1 = new Curso();
+        c1.setNombre("Java");
+        c1.setCodigo("333");
+        //guardando datos
+        c1.añadirAlumnoAlCurso(a1);
+        c1.añadirAlumnoAlCurso(a2);
+        session().save(a1);
+        session().save(a2);
+        session().save(c1);
+        return c1.getId();
+    }
+
+    private void whenElAlumnoQuiereAgregarseAlCurso(Long idAlumno) {
+        listaCursos =   repositorioCurso.listarCursos();
+        listaAlumnos = listaCursos.get(0).getListaAlumnos();
+
+    }
+
+    private void thenElAlumnoSeAgregaExitosamente() {
+        assertThat(listaCursos).isNotNull();
+        assertThat(listaCursos).hasSize(1);
+        assertThat(listaAlumnos).isNotNull();
+        assertThat(listaAlumnos).hasSize(2);
+    }
+
+
+    private void givenQueExisteUnAlumnoYUnCurso() {
+        Alumno a1 = new Alumno();
+        a1.setNombre("Joel");
+        Curso c1 = new Curso();
+        c1.añadirAlumnoAlCurso(a1);
+        ID_ALUMNO = (Long) session().save(a1);
+        ID_CURSO = (Long) session().save(c1);
+
+    }
+
+    private void whenBuscoElAlumno() {
+       curso = repositorioCurso.buscarAlumnoEnUnCurso(ID_ALUMNO,ID_CURSO);
+    }
+
+    private void thenMeDevuelveELAlumnoBuscado() {
+        assertThat(curso).isNotNull();
+        assertThat(curso.getListaAlumnos().get(0).getNombre()).isEqualTo("Joel");
+    }
+
     private void whenEliminoElCurso(Long idCurso) {
         curso = repositorioCurso.buscarCursoPorId(idCurso);
         repositorioCurso.eliminarCurso(curso);
@@ -150,56 +235,6 @@ public class RepositorioCursoTest extends SpringTest {
     private void thenMeDevuelveLaListaDeCursos(List<Curso> listaAlumnoEsperada, List<Curso> listaAlumnoObtenido) {
         assertThat(listaAlumnoObtenido).isEqualTo(listaAlumnoEsperada);
         assertThat(listaAlumnoObtenido).hasSize(3);
-    }
-
-    @Test
-    @Rollback
-    @Transactional
-    public void queUnAlumnoPuedaAgregarseAUnCurso(){
-
-        Long idCurso = givenQueExisteUnCursoYUnAlumno();
-
-        whenElAlumnoQuiereAgregarseAlCurso(idCurso);
-
-        thenElAlumnoSeAgregaExitosamente();
-
-    }
-
-    private Long givenQueExisteUnCursoYUnAlumno() {
-        Alumno a1 = new Alumno();
-        Alumno a2 = new Alumno();
-        //setteando los atributos a los alumnos
-        a1.setEmail("joel@gmail.com");
-        a1.setNombre("Joel");
-        a1.setTelefono("11332");
-        a2.setEmail("flor@gmail.com");
-        a2.setNombre("flor");
-        a2.setTelefono("113323123");
-        //Creando curso
-        Curso c1 = new Curso();
-        c1.setNombre("Java");
-        c1.setCodigo("333");
-        //guardando datos
-        c1.añadirAlumnoAlCurso(a1);
-        c1.añadirAlumnoAlCurso(a2);
-        session().save(a1);
-        session().save(a2);
-        session().save(c1);
-        return c1.getId();
-    }
-
-    private void whenElAlumnoQuiereAgregarseAlCurso(Long idAlumno) {
-        listaCursos =   repositorioCurso.listarCursos();
-        listaAlumnos = listaCursos.get(0).getListaAlumnos();
-
-    }
-
-    private void thenElAlumnoSeAgregaExitosamente() {
-        System.out.println(listaCursos.toString());
-        assertThat(listaCursos).isNotNull();
-        assertThat(listaCursos).hasSize(1);
-        assertThat(listaAlumnos).isNotNull();
-        assertThat(listaAlumnos).hasSize(2);
     }
 
 }

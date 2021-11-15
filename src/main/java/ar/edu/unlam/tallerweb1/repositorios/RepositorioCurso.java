@@ -14,4 +14,7 @@ public interface RepositorioCurso {
     Curso buscarCursoPorId(Long id_curso);
 
     void eliminarCurso(Curso cursoAEliminar);
+
+    Curso buscarAlumnoEnUnCurso(Long alumno, Long idCurso);
+
 }

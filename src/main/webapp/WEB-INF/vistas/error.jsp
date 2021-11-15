@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-8">
                 <c:if test="${not empty mensaje}">
-                    <h2>${mensaje}</h2>
+                    <h2 class="text-warning">${mensaje}</h2>
                 </c:if>
             </div>
             <div class="col-2">
@@ -19,6 +19,18 @@
         </div>
     </div>
 </div>
+
+<c:if test="${not empty errorMsg}">
+    <div class="container">
+        <div class="card-header mt-5">
+            <div class="row">
+                <div class="col">
+                    <h2>${errorMsg}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>
 
 
 <jsp:include page="/WEB-INF/includes/footer.jsp"/>

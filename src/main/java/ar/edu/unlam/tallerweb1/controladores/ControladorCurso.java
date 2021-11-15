@@ -2,12 +2,12 @@ package ar.edu.unlam.tallerweb1.controladores;
 
 import ar.edu.unlam.tallerweb1.AttributeModel.DatosCurso;
 import ar.edu.unlam.tallerweb1.Excepciones.*;
+import ar.edu.unlam.tallerweb1.modelo.Alumno;
 import ar.edu.unlam.tallerweb1.modelo.Curso;
-import ar.edu.unlam.tallerweb1.modelo.ItemCurso;
+import ar.edu.unlam.tallerweb1.servicios.ServicioAlumno;
 import ar.edu.unlam.tallerweb1.servicios.ServicioCurso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +22,13 @@ import java.util.Map;
 public class ControladorCurso {
 
     private ServicioCurso servicioCurso;
+    private ServicioAlumno servicioAlumno;
     private ModelAndView mav;
 
     @Autowired
-    public ControladorCurso(ServicioCurso servicioCurso) {
+    public ControladorCurso(ServicioCurso servicioCurso, ServicioAlumno servicioAlumno) {
         this.servicioCurso = servicioCurso;
+        this.servicioAlumno=servicioAlumno;
     }
 
     @RequestMapping("formulario-curso")
@@ -156,10 +158,10 @@ public class ControladorCurso {
 
         Map<String, String> errores = validarRegistroCurso(datosCurso);
         ModelMap model = new ModelMap();
+        model.put("nombreDefault", datosCurso.getNombreCurso());
+        model.put("codigoDefault", datosCurso.getCodigoCurso());
         if (errores.size() > 0) {
             model.put("erroresValidacion", errores);
-            model.put("nombreDefault", datosCurso.getNombreCurso());
-            model.put("codigoDefault", datosCurso.getCodigoCurso());
             return new ModelAndView(vista, model);
         }
         return null;
@@ -200,4 +202,68 @@ public class ControladorCurso {
         model.put("mensaje", mensaje);
         return new ModelAndView("error", model);
     }
+
+    @RequestMapping("agregar-alumno")
+    public ModelAndView listaParaAgregarAlumnos(@RequestParam Long idCurso){
+        return redirectAgregarEliminarAlumnosCurso(idCurso);
+
+    }
+    @RequestMapping("quitar-alumno")
+    public ModelAndView listaParaEliminarAlumnos(@RequestParam Long idCurso){
+        return redirectAgregarEliminarAlumnosCurso(idCurso);
+    }
+
+    private ModelAndView redirectAgregarEliminarAlumnosCurso(Long idCurso){
+
+        ModelMap model = new ModelMap();
+
+        try {
+            List<Alumno> listaAlumnos = servicioAlumno.listarAlumnos();
+            Curso curso = servicioCurso.buscarCursoPorId(idCurso);
+            model.put("listaAlumnos", listaAlumnos);
+            model.put("curso",curso);
+        } catch (listaNoEncontrada e) {
+            model.put("listaAlumnosVacia", "No hay alumnos que mostrar");
+        } catch (CursoNoEncontrado e){
+            return procesarErrores("Curso inexistente, no se puede agregar ningún alumno");
+        }
+        return new ModelAndView("lista-alumnos", model);
+
+
+    }
+
+    @RequestMapping("agregar-alumno-lista")
+    public ModelAndView agregarAlumnoAUnCursoLista(@RequestParam Long idCurso, @RequestParam Long idAlumno) {
+        return redirectAgregarAlumno(idCurso,idAlumno,"redirect:listar-cursos");
+    }
+
+    @RequestMapping("agregar-alumno-detalle")
+    public ModelAndView agregarAlumnoAUnCursoDetalle(@RequestParam Long idCurso, @RequestParam Long idAlumno) {
+        return redirectAgregarAlumno(idCurso,idAlumno,"redirect:curso-detalle?idCurso="+ idAlumno);
+
+    }
+
+    private ModelAndView redirectAgregarAlumno(@RequestParam Long idCurso, @RequestParam Long idAlumno,String vista){
+
+        try{
+            servicioCurso.agregarAlumnoAUnCurso(idAlumno,idCurso);
+        }catch (CursoNoEncontrado e){
+            return procesarErrores("Curso inexistente, no se puede agregar ningún alumno");
+        }catch (AlumnoNoEncontrado e){
+            return procesarErrores("Alumno inexistente, no se puede agregar al curso");
+        }catch (AlumnoExistente e){
+            return procesarErrores("Este alumno ya se encuentra inscripto en este curso");
+        }
+        return new ModelAndView(vista);
+    }
+
+    @RequestMapping("eliminar-alumno-curso")
+    public ModelAndView eliminarAlumnoDeUnCurso(Long idCurso, Long idAlumno) {
+
+            servicioCurso.eliminarAlumnoDeUnCurso(idCurso,idAlumno);
+
+            return new ModelAndView("redirect:agregar-alumno?idCurso="+idCurso);
+
+    }
+
 }

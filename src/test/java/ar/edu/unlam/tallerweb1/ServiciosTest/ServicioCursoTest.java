@@ -4,6 +4,7 @@ import ar.edu.unlam.tallerweb1.AttributeModel.DatosCurso;
 import ar.edu.unlam.tallerweb1.Excepciones.*;
 import ar.edu.unlam.tallerweb1.modelo.Alumno;
 import ar.edu.unlam.tallerweb1.modelo.Curso;
+import ar.edu.unlam.tallerweb1.repositorios.RepositorioAlumno;
 import ar.edu.unlam.tallerweb1.repositorios.RepositorioCurso;
 import ar.edu.unlam.tallerweb1.servicios.ServicioCurso;
 import ar.edu.unlam.tallerweb1.servicios.ServicioCursoImpl;
@@ -20,10 +21,12 @@ public class ServicioCursoTest {
 
 
     private RepositorioCurso repositorioCurso = mock(RepositorioCurso.class);
-    private ServicioCurso servicioCurso = new ServicioCursoImpl(repositorioCurso);
+    private RepositorioAlumno repositorioAlumno = mock(RepositorioAlumno.class);
+    private ServicioCurso servicioCurso = new ServicioCursoImpl(repositorioCurso,repositorioAlumno);
     private List<Curso> listaCursos;
     private Curso curso;
     private final Long ID_CURSO = 1L;
+    private final Long ID_ALUMNO = 2L;
     private final String CODIGO_CURSO = "777";
     private DatosCurso datosCurso = new DatosCurso(1L,"333","Java");
 
@@ -105,6 +108,76 @@ public class ServicioCursoTest {
 
         whenEliminoELCurso();
 
+    }
+
+    @Test
+    public void queSePuedaAgregarUnAlumnoAUnCurso(){
+
+        givenQUeExisteUnAlumnoYUnCurso();
+
+        whenAgregoElAlumnoAlCurso();
+
+        thenElAlumnoSeAgrega();
+
+    }
+
+    @Test(expected = AlumnoNoEncontrado.class)
+    public void queAlAgregarUnAlumnoAUnCursoYNoExisteLanzeUnAlumnoNoEncontradoException(){
+
+        givenQueUnAlumnoNoExiste();
+
+        whenAgregoElAlumnoAlCurso();
+
+    }
+
+    @Test(expected = CursoNoEncontrado.class)
+    public void queAlQuererAgregarUnAlumnoAUnCursoInexistenteLanzeUnCursoNoEncontradoException(){
+
+        givenQueUnCursoNoExiste();
+
+        whenBuscoElCurso();
+
+    }
+
+    @Test(expected = AlumnoExistente.class)
+    public void queAlAgregarUnAlumnoAUnCursoQueYaExisteMandeLanzeUnAlumnoExistenteException(){
+
+        givenQueUnAlumnoYaExisteDentroDeUnCurso();
+
+        whenAgregoElAlumnoAlCurso();
+
+    }
+
+    private void givenQueUnAlumnoYaExisteDentroDeUnCurso() {
+        when(repositorioAlumno.buscarAlumnoPorId(anyLong())).thenReturn(new Alumno());
+        when(repositorioCurso.buscarCursoPorId(anyLong())).thenReturn(new Curso());
+        when(repositorioCurso.buscarAlumnoEnUnCurso(anyLong(),anyLong())).thenReturn(new Curso());
+    }
+
+    private void givenQueUnCursoNoExiste() {
+        when(repositorioCurso.buscarCursoPorId(anyLong())).thenReturn(null);
+        when(repositorioAlumno.buscarAlumnoPorId(anyLong())).thenReturn(new Alumno());
+    }
+
+    private void givenQueUnAlumnoNoExiste() {
+        when(repositorioCurso.buscarCursoPorId(anyLong())).thenReturn(new Curso());
+        when(repositorioAlumno.buscarAlumnoPorId(anyLong())).thenReturn(null);
+    }
+
+    private void givenQUeExisteUnAlumnoYUnCurso() {
+        when(repositorioCurso.buscarCursoPorId(anyLong())).thenReturn(new Curso());
+        when(repositorioAlumno.buscarAlumnoPorId(anyLong())).thenReturn(new Alumno());
+    }
+
+    private void whenAgregoElAlumnoAlCurso() {
+        servicioCurso.agregarAlumnoAUnCurso(ID_ALUMNO,ID_CURSO);
+        curso = servicioCurso.buscarCursoPorId(ID_CURSO);
+    }
+
+
+    private void thenElAlumnoSeAgrega() {
+       assertThat(curso.getListaAlumnos()).isNotNull();
+       assertThat(curso.getListaAlumnos()).hasSize(1);
     }
 
     private void whenEliminoELCurso() {
