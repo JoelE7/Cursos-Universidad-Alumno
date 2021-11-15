@@ -5,10 +5,10 @@
 
 
 <c:if test="${not empty listaCursos}">
-    <div class="container-fluid mt-5">
+    <div class="animate__animated animate__fadeInDown container-fluid mt-5">
         <div class="row">
             <div class="col-7">
-                <h1 class="mb-5 text-right text-white font-italic">Lista de cursos</h1>
+                <h1 class="animate__animated animate__backInLeft mb-5 text-right text-white font-italic">Lista de cursos</h1>
             </div>
             <div class="col-5">
                 <a href="formulario-curso" class="float-right letra btn btn-success">Registrar curso</a>

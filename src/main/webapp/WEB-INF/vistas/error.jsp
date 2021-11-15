@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/includes/header.jsp"/>
+<c:if test="${not empty mensaje}">
 <div class="container">
     <div class="card-header mt-5">
         <div class="row">
@@ -19,13 +20,23 @@
         </div>
     </div>
 </div>
+</c:if>
 
 <c:if test="${not empty errorMsg}">
     <div class="container">
         <div class="card-header mt-5">
             <div class="row">
-                <div class="col">
-                    <h2>${errorMsg}</h2>
+                <div class="col-9">
+                    <h2 class="text-warning">${errorMsg}</h2>
+                </div>
+                <div class="col-3">
+                    <a class="error btn btn-block btn-warning btn-lg">Volver</a>
+                    <script>
+                        let error = document.querySelector(".error");
+                        error.addEventListener("click",()=>{
+                            window.history.back();
+                        })
+                    </script>
                 </div>
             </div>
         </div>

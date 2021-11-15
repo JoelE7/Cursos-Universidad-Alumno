@@ -4,10 +4,10 @@
 <jsp:include page="/WEB-INF/includes/header.jsp"/>
 
 <c:if test="${empty redirect}">
-<div class="container mt-5">
+<div class="container animate__animated animate__backInDown mt-5">
     <div class="row">
         <div class="col">
-            <h1 class="mb-5 text-center text-white font-italic">Modificar curso</h1>
+            <h1 class="animate__animated animate__backInLeft font-italic text-center mb-5">Modificar curso</h1>
         </div>
     </div>
     <div class="card-header bg-warning justify-content-center align-items-center vh-50 m-0">
@@ -56,10 +56,10 @@
 </div>
 </c:if>
 <c:if test="${not empty redirect}">
-    <div class="container mt-5">
+    <div class="container animate__animated animate__backInDown mt-5">
         <div class="row">
             <div class="col">
-                <h1 class="text-center">Modificar curso</h1>
+                <h1 class="animate__animated animate__backInLeft font-italic text-center mb-5">Modificar curso</h1>
             </div>
         </div>
         <div class="card-header mt-5">
@@ -95,7 +95,12 @@
                         <c:if test="${not empty codigoExistente}">
                             <p class="text-center letra text-danger">${codigoExistente}</p>
                         </c:if>
-                        <input type="hidden" name="idCurso" value="${cursoModificar.id}"/>
+                        <c:if test="${empty idDefault}">
+                            <input type="hidden" name="idCurso" value="${cursoModificar.id}"/>
+                        </c:if>
+                        <c:if test="${not empty idDefault}">
+                            <input type="hidden" name="idCurso" value="${idDefault}"/>
+                        </c:if>
                     </div>
                 </div>
                 <div class="row">

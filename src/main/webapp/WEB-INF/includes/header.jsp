@@ -14,6 +14,9 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <link rel="stylesheet" href="css/style.css">
     <title>Bon Appetite</title>
 </head>
@@ -33,7 +36,8 @@
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <!-- aca hacemos un menu propio dentro del item -->
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbardrop">Curso</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                               id="navbardrop">Curso</a>
                             <div class="dropdown-menu">
                                 <a href="formulario-curso" class="dropdown-item">Registrar curso</a>
                                 <a href="listar-cursos" class="dropdown-item">Listar cursos</a>
@@ -41,7 +45,8 @@
                         </li>
                         <li class="nav-item dropdown">
                             <!-- aca hacemos un menu propio dentro del item -->
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbardrop2">Alumno</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                               id="navbardrop2">Alumno</a>
                             <div class="dropdown-menu">
                                 <a href="formulario-alumno" class="dropdown-item">Registrar alumno</a>
                                 <a href="listar-alumnos" class="dropdown-item">Listar alumnos</a>

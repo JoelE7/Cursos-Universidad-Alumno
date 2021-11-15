@@ -10,7 +10,6 @@ import ar.edu.unlam.tallerweb1.modelo.Alumno;
 import ar.edu.unlam.tallerweb1.modelo.Curso;
 import ar.edu.unlam.tallerweb1.servicios.ServicioAlumno;
 import ar.edu.unlam.tallerweb1.servicios.ServicioCurso;
-import com.sun.xml.bind.v2.model.core.ID;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -202,16 +201,38 @@ public class ControladorCursoTest {
 
         thenElAlumnoSeEliminaDelCurso();
 
+    }
 
+    @Test
+    public void queCuandoEliminoUnAlumnoQueNoExisteEnUnCursoMandeElMsj(){
+
+        givenQueUnAlumnoNoExiste();
+
+        whenQuieroEliminarElAlumnoDelCurso();
+
+        thenMeMandaElMsjDeQueNoExiste("Alumno inexistente, no se puede eliminar al curso");
 
     }
+
+    @Test
+    public void queCuandoEliminoUnAlumnoCursoDeUnCursoQueNoExisteMandeElMsj(){
+
+        givenQueUnCursoNoExiste();
+
+        whenQuieroEliminarElAlumnoDelCurso();
+
+        thenMeMandaElMsjDeQueNoExiste("Curso inexistente, no se puede eliminar ningún alumno");
+
+    }
+
+
 
     private void whenQuieroEliminarElAlumnoDelCurso() {
         mav = controladorCurso.eliminarAlumnoDeUnCurso(ID_CURSO,ID_ALUMNO);
     }
 
     private void thenElAlumnoSeEliminaDelCurso() {
-        assertThat(mav.getViewName()).isEqualTo("redirect:agregar-alumno?="+ID_CURSO);
+        assertThat(mav.getViewName()).isEqualTo("redirect:agregar-alumno?idCurso="+ID_CURSO);
     }
 
     private void givenQueUnAlumnoYaExisteDentroDeUnCurso() {
@@ -220,10 +241,12 @@ public class ControladorCursoTest {
 
     private void givenQueUnCursoNoExiste() {
         doThrow(CursoNoEncontrado.class).when(servicioCurso).agregarAlumnoAUnCurso(anyLong(),anyLong());
+        doThrow(CursoNoEncontrado.class).when(servicioCurso).eliminarAlumnoDeUnCurso(anyLong(),anyLong());
     }
 
     private void givenQueUnAlumnoNoExiste() {
         doThrow(AlumnoNoEncontrado.class).when(servicioCurso).agregarAlumnoAUnCurso(anyLong(),anyLong());
+        doThrow(AlumnoNoEncontrado.class).when(servicioCurso).eliminarAlumnoDeUnCurso(anyLong(),anyLong());
     }
 
     private void givenQUeExisteUnAlumnoYUnCurso() {
@@ -233,11 +256,11 @@ public class ControladorCursoTest {
     }
 
     private void whenAgregoElAlumnoAlCurso() {
-        mav = controladorCurso.agregarAlumnoAUnCursoLista(ID_CURSO,ID_ALUMNO);
+        mav = controladorCurso.agregarAlumnoAUnCurso(ID_ALUMNO,ID_CURSO);
     }
 
     private void thenElAlumnoSeAgrega() {
-        assertThat(mav.getViewName()).isEqualTo("redirect:lista-cursos");
+        assertThat(mav.getViewName()).isEqualTo("redirect:agregar-alumno?idCurso="+ID_CURSO);
     }
 
     private void thenMeMandaElMsjDeQueNoExiste(String mensaje) {
