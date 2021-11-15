@@ -20,14 +20,12 @@
                     <tr>
                         <td class="letra">Nombre</td>
                         <td class="letra">Codigo del curso</td>
-                        <td class="letra">Cantidad de alumnos</td>
                         <td class="letra" colspan="10">Acciones</td>
                     </tr>
                     <c:forEach items="${listaCursos}" var="cursos">
                         <tr>
                             <td class="letra">${cursos.nombre}</td>
                             <td class="letra">${cursos.codigo}</td>
-                            <td class="letra">${cursos.cantidadDeAlumnos}</td>
                             <td class="letra"><a href="formulario-modificar-curso-lista?idCurso=${cursos.id}"
                                    class="btn btn-block btn-warning">Modificar</a></td>
                             <td><a href="curso-detalle?idCurso=${cursos.id}" class=" btn btn-block btn-primary">Ver

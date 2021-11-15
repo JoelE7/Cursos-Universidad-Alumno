@@ -30,7 +30,7 @@
                         <td><a href="eliminar-curso?idCurso=${cursoBuscado.id}" class="btn btn-danger">Eliminar
                             curso</a>
                         </td>
-                        <td><a href="agregar-alumno?idCurso=${cursos.id}" class="btn btn-block btn-success">Agregar alumno
+                        <td><a href="agregar-alumno?idCurso=${cursoBuscado.id}" class="btn btn-block btn-success">Agregar alumno
                         </a></td>
                     </tr>
                 </table>
