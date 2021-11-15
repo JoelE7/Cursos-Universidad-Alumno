@@ -4,15 +4,15 @@
 <jsp:include page="/WEB-INF/includes/header.jsp"/>
 
 <c:if test="${not empty redirect}">
-    <div class="container">
+    <div class="container animate__animated animate__backInDown mt-5">
         <div class="row">
             <div class="col">
-                <h1 class="text-center">Registro de alumnos</h1>
+                <h1 class="animate__animated animate__backInLeft font-italic text-center">Modificar alumno</h1>
             </div>
         </div>
-        <div class="card-header">
+        <div class="card-header bg-warning justify-content-center align-items-center vh-50 mt-5">
             <form:form action="modificar-alumno-detalle" modelAttribute="datosAModificar">
-                <div class="row">
+                <div class="row justify-content-center align-items-center">
                     <div class="col">
                         <input type="text" name="nombre" class="form-control mt-3" id="nombre" placeholder="Nombre"
                                value="${alumnoModificar.nombre}"/>
@@ -56,13 +56,13 @@
     </div>
 </c:if>
 <c:if test="${empty redirect}">
-    <div class="container">
+    <div class="container animate__animated animate__backInDown mt-5">
         <div class="row">
             <div class="col">
-                <h1 class="text-center">Registro de alumnos</h1>
+                <h1 class="text-center animate__animated animate__backInLeft font-italic">Modificar alumno</h1>
             </div>
         </div>
-        <div class="card-header">
+        <div class="card-header bg-warning justify-content-center align-items-center vh-50 mt-5">
             <form:form action="modificar-alumno-lista" modelAttribute="datosAModificar">
                 <div class="row">
                     <div class="col">
@@ -97,7 +97,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <input type="submit" value="Modificar" class="btn btn-block btn-warning mt-3">
+                        <input type="submit" value="Modificar" class="btn btn-block btn-success mt-3">
                     </div>
                 </div>
                 <c:if test="${not empty mensajeRegistro}">

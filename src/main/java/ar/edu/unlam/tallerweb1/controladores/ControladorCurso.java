@@ -28,9 +28,11 @@ public class ControladorCurso {
     @Autowired
     public ControladorCurso(ServicioCurso servicioCurso, ServicioAlumno servicioAlumno) {
         this.servicioCurso = servicioCurso;
-        this.servicioAlumno=servicioAlumno;
+        this.servicioAlumno = servicioAlumno;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //metodos del registro de cursos
     @RequestMapping("formulario-curso")
     public ModelAndView formularioCurso() {
         mav = procesarRegistroCurso(null);
@@ -41,7 +43,6 @@ public class ControladorCurso {
     public ModelAndView registroCursoExitoso() {
         mav = procesarRegistroCurso("El curso ha sido registrado con exito");
         return mav;
-
     }
 
     @RequestMapping("curso-validacion")
@@ -64,11 +65,32 @@ public class ControladorCurso {
 
     }
 
+    private ModelAndView procesarRegistroCurso(String mensaje) {
+        ModelMap model = new ModelMap();
+        if (mensaje != null) {
+            model.put("mensajeRegistro", mensaje);
+        }
+        DatosCurso curso = new DatosCurso();
+        model.put("cursoRegistro", curso);
+        return new ModelAndView("formulario-curso", model);
+    }
+
+    private Map<String, String> validarRegistroCurso(DatosCurso curso) {
+        Map<String, String> errores = new HashMap<>();
+
+        if (curso.getNombreCurso() == "" || curso.getNombreCurso() == null) {
+            errores.put("nombreError", "El nombre del curso no puede quedar vacio");
+        } else if (curso.getCodigoCurso() == "" || curso.getCodigoCurso() == null) {
+            errores.put("codigoError", "Debe ingresar un identificador del curso");
+        }
+        return errores;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    //metodo listar los cursos
     @RequestMapping("listar-cursos")
     public ModelAndView listarCursos() {
-
         ModelMap model = new ModelMap();
-
         try {
             List<Curso> listaCursos = servicioCurso.listarCursos();
             model.put("listaCursos", listaCursos);
@@ -78,6 +100,7 @@ public class ControladorCurso {
         return new ModelAndView("lista-cursos", model);
     }
 
+    //metodo que busca un curso por id
     @RequestMapping("curso-detalle")
     public ModelAndView buscarCursoPorId(@RequestParam Long idCurso) {
         ModelMap model = new ModelMap();
@@ -92,6 +115,8 @@ public class ControladorCurso {
 
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //metodos que modifican los datos de los cursos
     @RequestMapping("formulario-modificar-curso-lista")
     public ModelAndView formularioModificarCursoLista(@RequestParam Long idCurso) {
         return prepararFormularioModificarCurso(null, idCurso);
@@ -102,74 +127,10 @@ public class ControladorCurso {
         return prepararFormularioModificarCurso("detalle", idCurso);
     }
 
-    @RequestMapping("modificar-curso-lista")
-    public ModelAndView modificarCursoLista(@ModelAttribute DatosCurso datosCurso) {
-        if (redirectValidaciones(datosCurso, "formulario-modificar-curso") != null) {
-            return redirectValidaciones(datosCurso, "formulario-modificar-curso");
-        }
-
-        return modificarCursoRedirect("redirect:listar-cursos", datosCurso);
-    }
-
-    @RequestMapping("modificar-curso-detalle")
-    public ModelAndView modificarCursoDetalle(@ModelAttribute DatosCurso datosCurso) {
-        if (redirectValidaciones(datosCurso, "formulario-modificar-curso") != null) {
-            return redirectValidaciones(datosCurso, "formulario-modificar-curso");
-        }
-        return modificarCursoRedirect("redirect:curso-detalle?idCurso=" + datosCurso.getIdCurso(), datosCurso);
-    }
-
-    @RequestMapping("eliminar-curso")
-    public ModelAndView eliminarCurso(@RequestParam Long idCurso) {
-
-        try {
-            servicioCurso.eliminarCurso(idCurso);
-            mav = new ModelAndView("redirect:listar-cursos");
-        } catch (CursoNoEncontrado e) {
-            mav = procesarErrores("Curso inexistente, no se puede eliminar");
-        }
-        return mav;
-    }
-
-    private ModelAndView procesarRegistroCurso(String mensaje) {
-        ModelMap model = new ModelMap();
-
-        if (mensaje != null) {
-            model.put("mensajeRegistro", mensaje);
-        }
-        DatosCurso curso = new DatosCurso();
-        model.put("cursoRegistro", curso);
-        return new ModelAndView("formulario-curso", model);
-
-    }
-
-    private Map<String, String> validarRegistroCurso(DatosCurso curso) {
-        Map<String, String> errores = new HashMap<>();
-
-        if (curso.getNombreCurso() == "" || curso.getNombreCurso() == null) {
-            errores.put("nombreError", "El nombre del curso no puede quedar vacio");
-        } else if (curso.getCodigoCurso() == "" || curso.getCodigoCurso() == null) {
-            errores.put("codigoError", "Debe ingresar un identificador del curso");
-        }
-        return errores;
-    }
-
-    private ModelAndView redirectValidaciones(DatosCurso datosCurso, String vista) {
-
-        Map<String, String> errores = validarRegistroCurso(datosCurso);
-        ModelMap model = new ModelMap();
-        model.put("nombreDefault", datosCurso.getNombreCurso());
-        model.put("codigoDefault", datosCurso.getCodigoCurso());
-        if (errores.size() > 0) {
-            model.put("erroresValidacion", errores);
-            return new ModelAndView(vista, model);
-        }
-        return null;
-    }
-
+    //validara al usuario para enviarlo a una vista dependiendo desde donde haya entrado al formulario
+    // para modificar el curso
     private ModelAndView prepararFormularioModificarCurso(String redirigir, Long idCurso) {
         ModelMap model = new ModelMap();
-
         try {
             Curso cursoBuscado = servicioCurso.buscarCursoPorId(idCurso);
             DatosCurso datosCurso = new DatosCurso();
@@ -185,6 +146,22 @@ public class ControladorCurso {
         return new ModelAndView("formulario-modificar-curso", model);
     }
 
+    @RequestMapping("modificar-curso-lista")
+    public ModelAndView modificarCursoLista(@ModelAttribute DatosCurso datosCurso) {
+        if (redirectValidaciones(datosCurso, "formulario-modificar-curso") != null) {
+            return redirectValidaciones(datosCurso, "formulario-modificar-curso");
+        }
+        return modificarCursoRedirect("redirect:listar-cursos", datosCurso);
+    }
+
+    @RequestMapping("modificar-curso-detalle")
+    public ModelAndView modificarCursoDetalle(@ModelAttribute DatosCurso datosCurso) {
+        if (redirectValidaciones(datosCurso, "formulario-modificar-curso") != null) {
+            return redirectValidaciones(datosCurso, "formulario-modificar-curso");
+        }
+        return modificarCursoRedirect("redirect:curso-detalle?idCurso=" + datosCurso.getIdCurso(), datosCurso);
+    }
+
     private ModelAndView modificarCursoRedirect(String vista, DatosCurso datosCurso) {
 
         try {
@@ -197,23 +174,49 @@ public class ControladorCurso {
         return new ModelAndView(vista);
     }
 
-    private ModelAndView procesarErrores(String mensaje) {
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //metodo para eliminar un curso
+    @RequestMapping("eliminar-curso")
+    public ModelAndView eliminarCurso(@RequestParam Long idCurso) {
+
+        try {
+            servicioCurso.eliminarCurso(idCurso);
+            mav = new ModelAndView("redirect:listar-cursos");
+        } catch (CursoNoEncontrado e) {
+            mav = procesarErrores("Curso inexistente, no se puede eliminar");
+        }
+        return mav;
+    }
+
+    private ModelAndView redirectValidaciones(DatosCurso datosCurso, String vista) {
+
+        Map<String, String> errores = validarRegistroCurso(datosCurso);
         ModelMap model = new ModelMap();
-        model.put("mensaje", mensaje);
-        return new ModelAndView("error", model);
+        model.put("nombreDefault", datosCurso.getNombreCurso());
+        model.put("codigoDefault", datosCurso.getCodigoCurso());
+        model.put("idDefault", datosCurso.getIdCurso());
+        if (errores.size() > 0) {
+            model.put("erroresValidacion", errores);
+            return new ModelAndView(vista, model);
+        }
+        return null;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //agregado y eliminado de alumnos en cursos
     @RequestMapping("agregar-alumno")
-    public ModelAndView listaParaAgregarAlumnos(@RequestParam Long idCurso){
+    public ModelAndView listaParaAgregarAlumnos(@RequestParam Long idCurso) {
         return redirectAgregarEliminarAlumnosCurso(idCurso);
 
     }
+
     @RequestMapping("quitar-alumno")
-    public ModelAndView listaParaEliminarAlumnos(@RequestParam Long idCurso){
+    public ModelAndView listaParaEliminarAlumnos(@RequestParam Long idCurso) {
         return redirectAgregarEliminarAlumnosCurso(idCurso);
     }
 
-    private ModelAndView redirectAgregarEliminarAlumnosCurso(Long idCurso){
+    private ModelAndView redirectAgregarEliminarAlumnosCurso(Long idCurso) {
 
         ModelMap model = new ModelMap();
 
@@ -221,49 +224,57 @@ public class ControladorCurso {
             List<Alumno> listaAlumnos = servicioAlumno.listarAlumnos();
             Curso curso = servicioCurso.buscarCursoPorId(idCurso);
             model.put("listaAlumnos", listaAlumnos);
-            model.put("curso",curso);
+            model.put("curso", curso);
         } catch (listaNoEncontrada e) {
             model.put("listaAlumnosVacia", "No hay alumnos que mostrar");
-        } catch (CursoNoEncontrado e){
+        } catch (CursoNoEncontrado e) {
             return procesarErrores("Curso inexistente, no se puede agregar ningún alumno");
         }
         return new ModelAndView("lista-alumnos", model);
-
-
     }
 
-    @RequestMapping("agregar-alumno-lista")
-    public ModelAndView agregarAlumnoAUnCursoLista(@RequestParam Long idCurso, @RequestParam Long idAlumno) {
-        return redirectAgregarAlumno(idCurso,idAlumno,"redirect:listar-cursos");
+    @RequestMapping("agregar-alumno-curso")
+    public ModelAndView agregarAlumnoAUnCurso(@RequestParam Long idCurso, @RequestParam Long idAlumno) {
+        return redirectAgregarAlumno(idCurso, idAlumno, "redirect:agregar-alumno?idCurso=" + idAlumno);
     }
 
-    @RequestMapping("agregar-alumno-detalle")
-    public ModelAndView agregarAlumnoAUnCursoDetalle(@RequestParam Long idCurso, @RequestParam Long idAlumno) {
-        return redirectAgregarAlumno(idCurso,idAlumno,"redirect:curso-detalle?idCurso="+ idAlumno);
+    private ModelAndView redirectAgregarAlumno(@RequestParam Long idCurso, @RequestParam Long idAlumno, String vista) {
+        ModelMap model = new ModelMap();
 
-    }
-
-    private ModelAndView redirectAgregarAlumno(@RequestParam Long idCurso, @RequestParam Long idAlumno,String vista){
-
-        try{
-            servicioCurso.agregarAlumnoAUnCurso(idAlumno,idCurso);
-        }catch (CursoNoEncontrado e){
+        try {
+            servicioCurso.agregarAlumnoAUnCurso(idAlumno, idCurso);
+            Curso curso = servicioCurso.buscarCursoPorId(idCurso);
+            model.put("curso",curso);
+        } catch (CursoNoEncontrado e) {
             return procesarErrores("Curso inexistente, no se puede agregar ningún alumno");
-        }catch (AlumnoNoEncontrado e){
+        } catch (AlumnoNoEncontrado e) {
             return procesarErrores("Alumno inexistente, no se puede agregar al curso");
-        }catch (AlumnoExistente e){
+        } catch (AlumnoExistente e) {
             return procesarErrores("Este alumno ya se encuentra inscripto en este curso");
         }
-        return new ModelAndView(vista);
+        return new ModelAndView(vista,model);
     }
 
     @RequestMapping("eliminar-alumno-curso")
     public ModelAndView eliminarAlumnoDeUnCurso(Long idCurso, Long idAlumno) {
 
-            servicioCurso.eliminarAlumnoDeUnCurso(idCurso,idAlumno);
-
-            return new ModelAndView("redirect:agregar-alumno?idCurso="+idCurso);
+        try {
+            servicioCurso.eliminarAlumnoDeUnCurso(idCurso, idAlumno);
+        } catch (CursoNoEncontrado e) {
+            return procesarErrores("Curso inexistente, no se puede eliminar ningún alumno");
+        } catch (AlumnoNoEncontrado e) {
+            return procesarErrores("Alumno inexistente, no se puede eliminar al curso");
+        }
+        return new ModelAndView("redirect:agregar-alumno?idCurso=" + idCurso);
 
     }
+
+    //este metodo se encarga de mostrar los errores que puede hacer el usuario
+    private ModelAndView procesarErrores(String mensaje) {
+        ModelMap model = new ModelMap();
+        model.put("mensaje", mensaje);
+        return new ModelAndView("error", model);
+    }
+
 
 }

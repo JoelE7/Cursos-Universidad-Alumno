@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/includes/header.jsp"/>
 
-<div class="container mt-5">
+<div class="animate__animated animate__backInDown container mt-5">
     <div class="row">
         <div class="col">
-            <h1 class="mb-5 text-center text-white font-italic">Registro de cursos</h1>
+            <h1 class="animate__animated animate__backInLeft mb-5 text-center text-white font-italic">Registro de cursos</h1>
         </div>
     </div>
     <div class="card-header bg-warning justify-content-center align-items-center vh-50 m-0">

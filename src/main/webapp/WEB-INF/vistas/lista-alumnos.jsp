@@ -5,10 +5,10 @@
 
 
 <c:if test="${not empty listaAlumnos}">
-    <div class="container-fluid mt-5">
+    <div class="animate__animated animate__fadeInDown container-fluid mt-5">
         <div class="row">
             <div class="col-6">
-                <h1 class="mb-5 text-right text-white font-italic">Lista de alumnos</h1>
+                <h1 class="animate__animated animate__backInLeft mb-5 text-right text-white font-italic">Lista de alumnos</h1>
             </div>
             <c:if test="${empty curso}">
                 <div class="col-5">
@@ -47,7 +47,7 @@
                                     alumno</a></td>
                             </c:if>
                             <c:if test="${not empty curso}">
-                                <td><a href="agregar-alumno-lista?idCurso=${curso.id}&idAlumno=${alumnos.id}"
+                                <td><a href="agregar-alumno-curso?idCurso=${curso.id}&idAlumno=${alumnos.id}"
                                        class="btn btn-block btn-success">Agregar
                                     alumno</a></td>
                                 <c:if test="${not empty curso.listaAlumnos}">

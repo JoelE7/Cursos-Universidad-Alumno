@@ -23,7 +23,6 @@ public class Curso {
         name = "curso_alumno",
             joinColumns = @JoinColumn(name = "id_alumno"),
             inverseJoinColumns = @JoinColumn(name = "id_curso")
-
     )
     private List<Alumno> alumnos;
 

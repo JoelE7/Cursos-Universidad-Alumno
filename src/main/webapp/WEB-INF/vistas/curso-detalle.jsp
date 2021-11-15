@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/includes/header.jsp"/>
 <c:if test="${not empty cursoBuscado}">
-    <div class="container-fluid mt-5">
+    <div class="container-fluid animate__animated animate__backInDown mt-5">
         <div class="row">
             <div class="col-7">
-                <h1 class="mb-5 text-right text-white font-italic">Detalle de curso</h1>
+                <h1 class="animate__animated animate__backInLeft font-italic text-right mb-5">Detalle de curso</h1>
             </div>
             <div class="col-5">
                 <a href="listar-cursos" class="float-right letra btn btn-success">Volver a la lista de cursos</a>
@@ -19,8 +19,7 @@
                         <td class="letra">Nombre del curso</td>
                         <td class="letra">Codigo del curso</td>
                         <td class="letra">Cantidad de alumnos</td>
-                        <td class="letra">Acciones</td>
-                        <td><a href="listar-cursos" class="btn btn-success">Volver lista de cursos</a>
+                        <td colspan="3" class="letra">Acciones</td>
                     </tr>
                     <tr>
                         <td>${cursoBuscado.nombre}</td>
@@ -31,6 +30,8 @@
                         <td><a href="eliminar-curso?idCurso=${cursoBuscado.id}" class="btn btn-danger">Eliminar
                             curso</a>
                         </td>
+                        <td><a href="agregar-alumno?idCurso=${cursos.id}" class="btn btn-block btn-success">Agregar alumno
+                        </a></td>
                     </tr>
                 </table>
             </div>

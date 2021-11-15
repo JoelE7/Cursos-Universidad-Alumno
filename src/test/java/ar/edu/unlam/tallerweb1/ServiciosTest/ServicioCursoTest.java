@@ -148,6 +148,28 @@ public class ServicioCursoTest {
 
     }
 
+    @Test(expected = AlumnoNoEncontrado.class)
+    public void queAlEliminarUnAlumnoInexistenteDeUnCursoLanzeUnAlumnoNoEncontradoException(){
+
+        givenQueUnAlumnoNoExiste();
+
+        whenEliminoElAlumno();
+
+    }
+
+    @Test(expected = CursoNoEncontrado.class)
+    public void queAlEliminarUnAlumnoDeUnCursoInexistenteLanzeUnCursoNoEncontradoException(){
+
+        givenQueUnCursoNoExiste();
+
+        whenEliminoElAlumno();
+
+    }
+
+    private void whenEliminoElAlumno() {
+        servicioCurso.eliminarAlumnoDeUnCurso(ID_CURSO,ID_ALUMNO);
+    }
+
     private void givenQueUnAlumnoYaExisteDentroDeUnCurso() {
         when(repositorioAlumno.buscarAlumnoPorId(anyLong())).thenReturn(new Alumno());
         when(repositorioCurso.buscarCursoPorId(anyLong())).thenReturn(new Curso());

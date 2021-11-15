@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/includes/header.jsp"/>
 <c:if test="${not empty alumnoBuscado}">
-    <div class="container-fluid mt-5">
+    <div class="container-fluid animate__animated animate__backInDown mt-5">
         <div class="row">
             <div class="col-7">
-                <h1 class="mb-5 text-right text-white font-italic">Detalle de alumno</h1>
+                <h1 class="mb-5 animate__animated animate__backInLeft text-right text-white font-italic">Detalle de alumno</h1>
             </div>
             <div class="col-5">
                 <a href="listar-alumnos" class="float-right letra btn btn-success">Volver a la lista de alumnos</a>
